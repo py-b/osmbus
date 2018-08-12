@@ -1,0 +1,27 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# osmbus
+
+osmbus is an R package which exports
+[OpenStreetMap](https://www.openstreetmap.org) bus lines to GPX.
+
+# Example
+
+```r
+library(osmbus)
+write_gpx(id_rel = "3201308")
+```

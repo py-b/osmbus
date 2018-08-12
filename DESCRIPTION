@@ -1,0 +1,22 @@
+Package: osmbus
+Type: Package
+Title: Export OpenStreetMap Bus Lines to GPX
+Version: 0.1.0
+Imports:
+    xml2,
+    tibble,
+    dplyr,
+    purrr,
+Authors@R:
+    person(
+      "Pierre-Yves", "Berrard",
+      email = "pyb@gmx.com",
+      role = c("aut", "cre")
+    )
+Description: Export OpenStreetMap Bus Lines to GPX
+License: GPL-2
+Encoding: UTF-8
+URL: http://github.com/the-knife/osmbus
+BugReports: http://github.com/the-knife/osmbus/issues
+LazyData: true
+RoxygenNote: 6.1.0
