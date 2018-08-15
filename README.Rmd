@@ -23,5 +23,6 @@ osmbus is an R package which exports
 
 ```r
 library(osmbus)
-write_gpx(id_rel = "3201308")
+write_gpx(id_rel = "3201308") # get the data online
+write_gpx(id_rel = "bus1.osm") # local file (contains full data about the relation)
 ```

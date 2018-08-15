@@ -2,12 +2,13 @@
 osmbus
 ======
 
-The goal of osmbus is to export [OpenStreetMap](https://www.openstreetmap.org) bus lines to GPX.
+osmbus is an R package which exports [OpenStreetMap](https://www.openstreetmap.org) bus lines to GPX.
 
 Example
 =======
 
 ``` r
 library(osmbus)
-write_gpx(id_rel = "3201308")
+write_gpx(id_rel = "3201308") # get the data online
+write_gpx(id_rel = "bus1.osm") # local file (contains full data about the relation)
 ```
