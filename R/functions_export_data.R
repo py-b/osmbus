@@ -6,6 +6,7 @@
 #' @importFrom xml2 xml_find_first
 #' @importFrom xml2 xml_add_sibling
 #' @importFrom xml2 xml_find_all
+#' @importFrom xml2 write_xml
 #'
 #' @export
 
