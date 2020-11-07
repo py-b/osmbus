@@ -105,7 +105,7 @@ extract_full <- function(id_rel) {
     full %>%
     xml_find_all(".//relation/tag") %>%
     xml_attrs()
-  rel_tags <- setNames(
+  rel_tags <- stats::setNames(
     liste_tags %>% map_chr("v"),
     liste_tags %>% map_chr("k")
   )

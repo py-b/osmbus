@@ -13,7 +13,7 @@ distance_m <- function(lon1, lat1, lon2, lat2) {
   ) * earth_radius
 }
 
-circ <- function(v1) v1[1] == tail(v1, 1)
+circ <- function(v1) v1[1] == utils::tail(v1, 1)
 
 rotate_circ <- function(v, offset) {
   if (!circ(v)) stop("Input should be circular")
@@ -42,8 +42,8 @@ merge_ways <- function(v1,
 
   h1 <- v1[1]
   h2 <- v2[1]
-  t1 <- tail(v1, 1)
-  t2 <- tail(v2, 1)
+  t1 <- utils::tail(v1, 1)
+  t2 <- utils::tail(v2, 1)
 
   if (t1 == h2) res <- c(v1, v2)
   else if (t1 == t2) res <- c(v1,  rev(v2))
