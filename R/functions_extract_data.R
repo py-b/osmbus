@@ -15,19 +15,34 @@
 #'
 #' @export
 
-extract_full <- function(id_rel) {
+extract_full <- function(id_rel,
+                         overpass_api = getOption("osmbus.overpass_url")) {
 
-  ## Source de données ##
+  ## Télécharge données ##
 
-    # si id est une suite de chiffres lit version en ligne,
-    # sinon tente de lire fichier xml en local
-
-  if (grepl("^\\d+$", id_rel)) {
-    api <- "https://www.openstreetmap.org/api/0.6"
-    id_rel <- sprintf("%s/relation/%s/full", api, id_rel)
+  if (is.null(getOption("osmbus.overpass_url"))) {
+    overpass_url <- "http://overpass-api.de/api/"
   }
 
-  full <- read_xml(id_rel)
+  overpass_query <- sprintf(
+    "[out:xml]; (relation(id:%s);); (._;>;); out meta;",
+    id_rel
+  )
+
+  overpass_url <- paste0(
+    overpass_url,
+    "interpreter?data=",
+    URLencode(overpass_query, reserved = TRUE),
+    "&target=compact"
+  )
+
+  dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
+  download.file(
+    url = overpass_url,
+    destfile = dest
+  )
+
+  full <- read_xml(dest)
 
   ## Géométrie ##
 
