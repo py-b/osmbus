@@ -16,7 +16,7 @@
 #' @export
 
 extract_full <- function(id_rel,
-                         overpass_api = getOption("osmbus.overpass_url")) {
+                         overpass_url = getOption("osmbus.overpass_url")) {
 
   ## Télécharge données ##
 
