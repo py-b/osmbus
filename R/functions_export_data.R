@@ -29,10 +29,10 @@ write_gpx <- function(id_rel,
       quiet = quiet
     )
 
-  minlat <- data_list$bounds["minlat"] %>% paste
-  minlon <- data_list$bounds["minlon"] %>% paste
-  maxlat <- data_list$bounds["maxlat"] %>% paste
-  maxlon <- data_list$bounds["maxlon"] %>% paste
+  minlat <- as.character(data_list$bounds["minlat"])
+  minlon <- as.character(data_list$bounds["minlon"])
+  maxlat <- as.character(data_list$bounds["maxlat"])
+  maxlon <- as.character(data_list$bounds["maxlon"])
 
   rel_attr <- data_list$rel_attr
   rel_tags <- data_list$rel_tags
@@ -56,7 +56,7 @@ write_gpx <- function(id_rel,
       version = rel_attr["version"],
       timestamp = rel_attr["timestamp"]
     ) %>%
-    invisible
+    invisible()
 
   for (tag in names(rel_tags)) {
     gpx %>%
@@ -81,7 +81,7 @@ write_gpx <- function(id_rel,
       attribution = "http://www.openstreetmap.org/copyright",
       license = "http://opendatacommons.org/licenses/odbl/1-0/"
     ) %>%
-    invisible
+    invisible()
 
   # wpt
 
@@ -101,7 +101,7 @@ write_gpx <- function(id_rel,
   gpx %>%
     xml_add_child("trk") %>%
     xml_add_child("trkseg") %>%
-    invisible
+    invisible()
 
   for (i in 1:data_list$trkpt_count) {
     gpx %>%

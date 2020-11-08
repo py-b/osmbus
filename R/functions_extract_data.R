@@ -71,7 +71,7 @@ extract_full <- function(id_rel,
   # noeuds constituant le tracé ordonnés + sans doublon (vecteur)
   trace <-
     map(id_way_trace, list_nd, full) %>%
-    merge_all_ways
+    merge_all_ways()
 
   # coord des noeuds constituant le tracé (data_frame)
   trkpt_base <- left_join(
@@ -139,7 +139,7 @@ extract_full <- function(id_rel,
       )
   }
 
-  trk_km <- (sum(trkpt_base$d_last) / 1000) %>% round(3)
+  trk_km <- round(sum(trkpt_base$d_last) / 1000, 3)
 
   ## Ouptut ##
 
