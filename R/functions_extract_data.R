@@ -33,12 +33,12 @@ extract_full <- function(id_rel,
   overpass_url <- paste0(
     overpass_url,
     "?data=",
-    URLencode(overpass_query, reserved = TRUE),
+    utils::URLencode(overpass_query, reserved = TRUE),
     "&target=compact"
   )
 
   dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
-  download.file(
+  utils::download.file(
     url = overpass_url,
     destfile = dest,
     quiet = quiet
