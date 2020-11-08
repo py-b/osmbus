@@ -1,7 +1,6 @@
 ## Extrait données d'un fichier osm /full (pour tests, export...)
 
 #' @importFrom dplyr  %>%
-#' @importFrom dplyr  select
 #' @importFrom dplyr  mutate_at
 #' @importFrom dplyr  left_join
 #' @importFrom xml2   read_xml
@@ -58,7 +57,7 @@ extract_full <- function(id_rel,
     xml_attrs() %>%
     do.call(rbind, .) %>%
     as_tibble() %>%
-    select(id, lat, lon, version) %>%
+    subset(select = c("id", "lat", "lon", "version")) %>%
     mutate_at(
       c("lat", "lon"),
       as.numeric
