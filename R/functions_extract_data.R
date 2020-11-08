@@ -36,11 +36,12 @@ extract_data <- function(id_rel,
     "&target=compact"
   )
 
+  if (!quiet) message("Downloading data from OpenStreetMap")
   dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
   utils::download.file(
     url = overpass_url,
     destfile = dest,
-    quiet = quiet
+    quiet = TRUE
   )
 
   full <- read_xml(dest)
