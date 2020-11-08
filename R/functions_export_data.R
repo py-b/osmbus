@@ -23,7 +23,7 @@ write_gpx <- function(id_rel,
 
   if (!quiet) cat("Relation", id_rel)
   data_list <-
-    extract_full(
+    extract_data(
       id_rel,
       overpass_url = overpass_url,
       quiet = quiet

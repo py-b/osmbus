@@ -14,7 +14,7 @@
 #'
 #' @export
 
-extract_full <- function(id_rel,
+extract_data <- function(id_rel,
                          overpass_url = getOption("osmbus.overpass_url"),
                          quiet = FALSE) {
 
