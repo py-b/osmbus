@@ -10,7 +10,9 @@
 #'
 #' @export
 
-write_gpx <- function(id_rel, quiet = TRUE) {
+write_gpx <- function(id_rel,
+                      path = ".",
+                      quiet = TRUE) {
 
   ## Extraction données ##
 
@@ -105,9 +107,11 @@ write_gpx <- function(id_rel, quiet = TRUE) {
 
   ## Écriture disque ##
 
+  dir.exists(path) || dir.create(path)
+  filename <- paste0(rel_tags["route"], "-", rel_tags["ref"], "_", rel_attr["id"], ".gpx")
   write_xml(
     gpx,
-    paste0(rel_tags["route"], "-", rel_tags["ref"], "_", rel_attr["id"], ".gpx"),
+    file.path(path, filename),
     fileEncoding = "UTF-8"
   )
 
