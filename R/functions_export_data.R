@@ -17,14 +17,10 @@
 
 write_gpx <- function(id_rel,
                       path = ".",
-                      overpass_url = getOption("osmbus.overpass_url"),
+                      overpass_url = "http://overpass-api.de/api/interpreter",
                       quiet = FALSE) {
 
   ## Extraction données ##
-
-  if (is.null(overpass_url)) {
-    overpass_url <- "http://overpass-api.de/api/interpreter"
-  }
 
   if (!quiet) cat("Relation", id_rel)
   data_list <-

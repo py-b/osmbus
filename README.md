@@ -186,8 +186,7 @@ The data is retrieved from OpenStreetMap using the [overpass
 API](https://wiki.openstreetmap.org/wiki/Overpass_API).
 
 You can choose which instance of the API is used via the `overpass_url`
-argument of the functions, or by defining an option
-`option(osmbus.overpass_url=...")`. By default, the main instance
+argument of the functions. By default, the main instance
 `"http://overpass-api.de/api/interpreter"` is used. See the link above
 for a list of available instances.
 

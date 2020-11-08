@@ -6,7 +6,7 @@
 \usage{
 extract_data(
   id_rel,
-  overpass_url = getOption("osmbus.overpass_url"),
+  overpass_url = "http://overpass-api.de/api/interpreter",
   quiet = FALSE
 )
 }

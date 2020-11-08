@@ -7,7 +7,7 @@
 write_gpx(
   id_rel,
   path = ".",
-  overpass_url = getOption("osmbus.overpass_url"),
+  overpass_url = "http://overpass-api.de/api/interpreter",
   quiet = FALSE
 )
 }
