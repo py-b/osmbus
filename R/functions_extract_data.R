@@ -53,9 +53,10 @@ extract_full <- function(id_rel,
 
   # coordonnées et version de tous les noeuds du fichier full (data_frame)
   coord_nd <-
-    osm_nodes %>%
-    xml_attrs() %>%
-    do.call(rbind, .) %>%
+    do.call(
+      rbind,
+      xml_attrs(osm_nodes)
+    ) %>%
     as_tibble() %>%
     subset(select = c("id", "lat", "lon", "version")) %>%
     mutate_at(
