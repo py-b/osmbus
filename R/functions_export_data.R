@@ -12,12 +12,22 @@
 
 write_gpx <- function(id_rel,
                       path = ".",
-                      quiet = TRUE) {
+                      overpass_url = getOption("osmbus.overpass_url"),
+                      quiet = FALSE) {
 
   ## Extraction données ##
 
+  if (is.null(getOption("osmbus.overpass_url"))) {
+    overpass_url <- "http://overpass-api.de/api/"
+  }
+
   if (!quiet) cat("Relation", id_rel)
-  data_list <- extract_full(id_rel)
+  data_list <-
+    extract_full(
+      id_rel,
+      overpass_url = overpass_url,
+      quiet = quiet
+    )
 
   minlat <- data_list$bounds["minlat"] %>% paste
   minlon <- data_list$bounds["minlon"] %>% paste

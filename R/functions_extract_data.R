@@ -16,7 +16,8 @@
 #' @export
 
 extract_full <- function(id_rel,
-                         overpass_url = getOption("osmbus.overpass_url")) {
+                         overpass_url = getOption("osmbus.overpass_url"),
+                         quiet = FALSE) {
 
   ## Télécharge données ##
 
@@ -39,7 +40,8 @@ extract_full <- function(id_rel,
   dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
   download.file(
     url = overpass_url,
-    destfile = dest
+    destfile = dest,
+    quiet = quiet
   )
 
   full <- read_xml(dest)
