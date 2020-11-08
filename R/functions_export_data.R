@@ -1,5 +1,10 @@
 #### ECRITURE GPX ####
 
+#' Export bus line to GPX
+#'
+#' @inheritParams extract_data
+#' @param path the directorty where to write the GPX file.
+#'
 #' @importFrom dplyr %>%
 #' @importFrom xml2 xml_new_document
 #' @importFrom xml2 xml_add_child

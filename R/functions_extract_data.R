@@ -1,5 +1,9 @@
-## Extrait données d'un fichier osm /full (pour tests, export...)
-
+#' Download data and procces it to be exported
+#'
+#' @param id_rel the identifier of the OpenStreetMap relation.
+#' @param overpass_url instance of the Overpass API to use to retrieve data.
+#' @param quiet `TRUE` to desactivate information messages.
+#'
 #' @importFrom dplyr  %>%
 #' @importFrom dplyr  mutate_at
 #' @importFrom dplyr  left_join
