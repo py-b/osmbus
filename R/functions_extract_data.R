@@ -21,8 +21,8 @@ extract_full <- function(id_rel,
 
   ## Télécharge données ##
 
-  if (is.null(getOption("osmbus.overpass_url"))) {
-    overpass_url <- "http://overpass-api.de/api/"
+  if (is.null(overpass_url)) {
+    overpass_url <- "http://overpass-api.de/api/interpreter"
   }
 
   overpass_query <- sprintf(
@@ -32,7 +32,7 @@ extract_full <- function(id_rel,
 
   overpass_url <- paste0(
     overpass_url,
-    "interpreter?data=",
+    "?data=",
     URLencode(overpass_query, reserved = TRUE),
     "&target=compact"
   )

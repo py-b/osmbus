@@ -17,8 +17,8 @@ write_gpx <- function(id_rel,
 
   ## Extraction données ##
 
-  if (is.null(getOption("osmbus.overpass_url"))) {
-    overpass_url <- "http://overpass-api.de/api/"
+  if (is.null(overpass_url)) {
+    overpass_url <- "http://overpass-api.de/api/interpreter"
   }
 
   if (!quiet) cat("Relation", id_rel)
