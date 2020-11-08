@@ -29,7 +29,7 @@ extract_data <- function(id_rel,
     id_rel
   )
 
-  overpass_url <- paste0(
+  download_url <- paste0(
     overpass_url,
     "?data=",
     utils::URLencode(overpass_query, reserved = TRUE),
@@ -39,7 +39,7 @@ extract_data <- function(id_rel,
   if (!quiet) message("Downloading data from OpenStreetMap")
   dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
   utils::download.file(
-    url = overpass_url,
+    url = download_url,
     destfile = dest,
     quiet = TRUE
   )
