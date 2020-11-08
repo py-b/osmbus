@@ -45,13 +45,16 @@ extract_full <- function(id_rel,
   )
 
   full <- read_xml(dest)
+  osm_nodes <- xml_find_all(full, ".//node")
+
+  # verif présence data :
+  if (!length(osm_nodes)) stop("no data found for this relation.")
 
   ## Géométrie ##
 
   # coordonnées et version de tous les noeuds du fichier full (data_frame)
   coord_nd <-
-    full %>%
-    xml_find_all(".//node") %>%
+    osm_nodes %>%
     xml_attrs() %>%
     do.call(rbind, .) %>%
     as_tibble() %>%
