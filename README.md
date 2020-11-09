@@ -199,3 +199,22 @@ for a list of available instances.
 
 Note that this read-only API can be a few minutes behind the editing
 API.
+
+### Example of use
+
+With the gpx file, you are a few steps away from creating a map like
+this :
+
+<iframe width="100%" height="350px" frameborder="0" allowfullscreen src="//umap.openstreetmap.fr/fr/map/reseau-stan-2019-lignes-principales_218270?scaleControl=false&amp;miniMap=false&amp;scrollWheelZoom=false&amp;zoomControl=true&amp;allowEdit=false&amp;moreControl=true&amp;searchControl=null&amp;tilelayersControl=null&amp;embedControl=null&amp;datalayersControl=true&amp;onLoadPanel=none&amp;captionBar=false&amp;datalayers=549562">
+
+</iframe>
+
+<p>
+
+<a href="//umap.openstreetmap.fr/fr/map/reseau-stan-2019-lignes-principales_218270">See
+full screen map</a>
+
+</p>
+
+This map was not made with R but with an interactive tool called
+[uMap](http://umap.openstreetmap.fr).
