@@ -10,18 +10,14 @@ GPX files.
 You can install it from github with :
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("py-b/osmbus")
+# install.packages("remotes")
+remotes::install_github("py-b/osmbus")
 ```
-
-Note : *on Windows*, you need to have
-[RTools](https://cran.r-project.org/bin/windows/Rtools) to make
-{devtools} work.
 
 ### Just give me my GPX file
 
-You only have to provide the identifier of the OpenStreetMap relation of
-the transport line.
+You only have to provide the relation identifier of the transport line
+in OpenStreetMap (OSM).
 
 For example, we want to export [this bus
 line](https://www.openstreetmap.org/relation/3220296) (near Nancy,
@@ -31,7 +27,7 @@ France) :
 write_gpx(id_rel = "3220296")
 ```
 
-As recommended on the OSM wiki, the ways in the relation should be
+As stated in the OSM documentation, the ways in the relation should be
 listed beginning with the way at the initial stop position and ending
 with the way at the terminal stop, in the right order. **If this is not
 the case, the function cannot work**. The package automatically reverses
@@ -43,13 +39,13 @@ transport vehicle from entrance to exit.
 
 ##### Content of the file
 
-  - metadata about the transport line : some retrieved from OSM (for
-    example the version of the relation) and some calculated by the
-    package (for example the length in kilometers) ;
-  - position and names of the stops (`role = "stop"`) in the relation,
-    as gps `wpt` ;
-  - list of the points of the track, in the correct order, as gps
-    `trkseg`.
+  - transport line metadata : some retrieved from OSM (for example the
+    version of the relation) and some calculated by the package (for
+    example the length in kilometers) ;
+  - coordinates and names of the stops (`role = "stop"` in the
+    relation), as `wpt(s)` elements ;
+  - list of the track points in the correct order, as a `trkseg`
+    element.
 
 It will be structured like this :
 
@@ -97,7 +93,7 @@ It will be structured like this :
 </gpx>
 ```
 
-### Example of use
+##### Example of use
 
 With the gpx file, you are a few steps away from creating a map like
 [this](http://u.osmfr.org/m/218270).
@@ -125,7 +121,7 @@ extract_data(id_rel = "3220296")
 #>                                                        from 
 #>                                     "Seichamps Haie Cerlin" 
 #>                                                        name 
-#> "Tempo 3 : Seichamps Haie Cerlin <U+2192> Villers Campus Sciences" 
+#> "Tempo 3 : Seichamps Haie Cerlin → Villers Campus Sciences" 
 #>                                                     network 
 #>                                                      "Stan" 
 #>                                                    operator 
