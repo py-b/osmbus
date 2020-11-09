@@ -177,6 +177,12 @@ extract_full(id_rel = "3220296")
 _(`d_last` in the `trkpt_base` data.frame gives the distance to the previous
 point, in meters)_
 
+> If you wish to both export to a file and keep the data, you can affect the
+> result of `write_gpx()` to an objet :
+> ```r
+> bus_data <- write_gpx(id_rel = "3220296")
+> ```
+
 ### Overpass API
 
 The data is retrieved from OpenStreetMap using the

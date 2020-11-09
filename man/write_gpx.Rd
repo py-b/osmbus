@@ -20,6 +20,10 @@ write_gpx(
 
 \item{quiet}{\code{TRUE} to desactivate information messages.}
 }
+\value{
+The data used to export the file, invisibly. This is the same as the
+result of \code{\link{extract_data}}.
+}
 \description{
 Export bus line to GPX
 }

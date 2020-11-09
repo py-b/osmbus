@@ -5,6 +5,9 @@
 #' @inheritParams extract_data
 #' @param path the directorty where to write the GPX file.
 #'
+#' @return The data used to export the file, invisibly. This is the same as the
+#'   result of [`extract_data`].
+#'
 #' @importFrom dplyr %>%
 #' @importFrom xml2 xml_new_document
 #' @importFrom xml2 xml_add_child
@@ -127,5 +130,7 @@ write_gpx <- function(id_rel,
   )
 
   if (!quiet) cat(" [Done]\n")
+
+  invisible(data_list)
 
 }
