@@ -104,7 +104,7 @@ generate the gpx file (this can be useful to do something else than
 exporting to GPX).
 
 ``` r
-extract_full(id_rel = "3220296")
+extract_data(id_rel = "3220296")
 #> $bounds
 #>    minlat    minlon    maxlat    maxlon 
 #> 48.663444  6.142478 48.719615  6.269548 
