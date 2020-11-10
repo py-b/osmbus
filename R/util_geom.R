@@ -1,8 +1,8 @@
-#### FONCTIONS ####
+#' @importFrom utils head tail
 
 distance_m <- function(lon1, lat1, lon2, lat2) {
   #distance en m entre deux points de coordonnées en WGS84
-  earth_radius <- 6378137 #6378km
+  earth_radius <- 6371230 # 6371 km
   lon1_rad <- lon1 * pi / 180
   lat1_rad <- lat1 * pi / 180
   lon2_rad <- lon2 * pi / 180
@@ -13,11 +13,11 @@ distance_m <- function(lon1, lat1, lon2, lat2) {
   ) * earth_radius
 }
 
-circ <- function(v1) v1[1] == utils::tail(v1, 1)
+circ <- function(way) head(way, 1) == tail(way, 1)
 
-rotate_circ <- function(v, offset) {
-  if (!circ(v)) stop("Input should be circular")
-  v1 <- v[-1]
+rotate_circ <- function(way, offset) {
+  if (!circ(way)) stop("Input should be circular")
+  v1 <- way[-1]
   n <- length(v1)
   new_order <- (1:n + (offset - 1)) %% n
   new_order[new_order == 0] <- n
@@ -28,28 +28,23 @@ rm_following_double <- function(v) {
   garde <- v[-1] != v[-length(v)]
   v[c(garde, TRUE)]
 }
-# rm_following_double(1:10)
-# rm_following_double(sample(1:4, 15, replace = TRUE))
-# rm_following_double(c(1,1,2,3,3,4,5,5))
-# rm_following_double(c(1:5, 5:0, 0:3, 3:-1))
-# rm_following_double(rep(c(1:5, 5:1), each = 3))
 
-merge_ways <- function(v1,
-                       v2,
-                       rm.double = TRUE) {
+merge_2_ways <- function(way1,
+                         way2,
+                         rm.double = TRUE) {
 
-  if (length(v1) == 0 | length(v2) == 0) return(character(0))
+  if (!length(way1) || !length(way2)) stop("empty way")
 
-  h1 <- v1[1]
-  h2 <- v2[1]
-  t1 <- utils::tail(v1, 1)
-  t2 <- utils::tail(v2, 1)
+  h1 <- head(way1, 1)
+  h2 <- head(way2, 1)
+  t1 <- tail(way1, 1)
+  t2 <- tail(way2, 1)
 
-  if (t1 == h2) res <- c(v1, v2)
-  else if (t1 == t2) res <- c(v1,  rev(v2))
-  else if (h1 == h2) res <- c(rev(v1), v2)
-  else if (h1 == t2) res <- c(rev(v1), rev(v2))
-  else return(character(0))
+  if      (t1 == h2) res <- c(way1, way2)
+  else if (t1 == t2) res <- c(way1,  rev(way2))
+  else if (h1 == h2) res <- c(rev(way1), way2)
+  else if (h1 == t2) res <- c(rev(way1), rev(way2))
+  else stop("ways not connected by their ends")
 
   if (rm.double) res <- rm_following_double(res)
 
@@ -57,25 +52,35 @@ merge_ways <- function(v1,
 
 }
 
+roundabout_part <- function(way_in,
+                            roundabout,
+                            way_out = way_in) {
 
-# portion_gir ------------------------------------------------------------
+  stopifnot(
+    circ(roundabout),
+    is.character(way_in),
+    is.character(roundabout),
+    is.character(way_out)
+  )
 
-portion_gir <- function(way_in,
-                        gir,
-                        way_out = way_in) {
+  node_in  <- intersect(way_in,  roundabout)
+  node_out <- intersect(way_out, roundabout)
 
-  node_in <- intersect(way_in, gir)
-  node_out <- intersect(way_out, gir)
+  stopifnot(
+    length(node_in) == 1,
+    length(node_out) == 1
+  )
 
-  # rotation gir pour que le premier point soit l'entree
-  if (gir[1] != node_in) {
-    gir <- rotate_circ(gir, which(gir == node_in) - 1)
+  # rotate roundabout so that first node is entrance
+  if (roundabout[1] != node_in) {
+    offset <- which(roundabout == node_in) - 1
+    roundabout <- rotate_circ(roundabout, offset)
   }
 
-  # portion du giratoire à traverser
-  debut <- which(gir == node_in)
-  fin <-  which(gir == node_out)
-  gir[min(debut):max(fin)]
+  # part of roundabout to use
+  debut <- which(roundabout == node_in)
+  fin <-  which(roundabout == node_out)
+  roundabout[min(debut):max(fin)]
 
 }
 
@@ -138,24 +143,38 @@ portion_gir <- function(way_in,
 #   c("5", "1", "3", "2", "5")
 # )
 
-# merge 2 ----------------
-# incluant traversee giratoire complet
+# anti_clockwise
+# portion_gir(
+#   c("2", "4"),
+#   rev(c("3", "2", "5", "1", "3")),
+#   c("1", "6")
+# )
+#   #            > *3* >
+#   #          /        \
+#   #         /          \
+#   #  4 -<- 2            1 ->- 6
+#   #         \          /
+#   #          \        /
+#   #           -< 5 -<
 
-merge_all_ways <- function(ways) {
 
-  stopifnot(!circ(ways[[1]]) & !circ(ways[[length(ways)]]))
+merge_ways <- function(ways) {
+
+  if (circ(ways[[1]]) || circ(ways[[length(ways)]])) {
+    stop("incorrect data, first or last way cannot be circular")
+  }
 
   # calcule portion de giratoire empruntés
-  pos_giratoires <- which(sapply(ways, circ))
-  for (i in pos_giratoires) {
+  pos_roundabouts <- which(sapply(ways, circ))
+  for (i in pos_roundabouts) {
     ways[[i]] <-
-      portion_gir(
+      roundabout_part(
         ways[[i - 1]],
         ways[[i]],
         ways[[i + 1]]
       )
   }
 
-  Reduce(merge_ways, ways)
+  Reduce(merge_2_ways, ways)
 
 }

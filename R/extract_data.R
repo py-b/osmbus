@@ -75,7 +75,7 @@ extract_data <- function(id_rel,
   # noeuds constituant le tracé ordonnés + sans doublon (vecteur)
   trace <-
     map(id_way_trace, list_nd, full) %>%
-    merge_all_ways()
+    merge_ways()
 
   # coord des noeuds constituant le tracé (data_frame)
   trkpt_base <- left_join(
