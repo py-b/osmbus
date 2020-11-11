@@ -211,8 +211,11 @@ list_nd <- function(way, x) {
 
 # name of a node nd (x = downloaded xml data)
 nd_name <- function(nd, x) {
-  x %>%
+  res <-
+    x %>%
     xml_find_first(sprintf(".//node[@id='%s']", nd)) %>%
     xml_find_first(".//tag[@k='name']") %>%
     xml_attr("v")
+  if (is.na(res)) res <- ""
+  res
 }
