@@ -119,9 +119,11 @@ extract_data <- function(id_rel,
   )
 
   # relation stops (vector)
+  stop_roles <- c("stop", 'stop_entry_only', 'stop_exit_only')
+  xpath_attr_query <- paste0("@role='", stop_roles, "'", collapse = " or ")
   stop_id <-
     full %>%
-    xml_find_all(".//relation/member[@role='stop']") %>%
+    xml_find_all(sprintf(".//relation/member[%s']", xpath_attr_query)) %>%
     xml_attrs() %>%
     map_chr("ref")
 
