@@ -96,9 +96,20 @@ extract_data <- function(id_rel,
     map_chr("ref")
 
   # ordered and unduplicated track nodes (vector)
-  trace <-
-    map(id_way_trace, list_nd, full) %>%
-    merge_ways()
+  tryCatch(
+
+    trace <-
+      map(id_way_trace, list_nd, full) %>%
+      merge_ways(),
+
+    error = function(e) {
+      stop(
+        "probably discontinuous track ? Check OSM data.\n",
+        "  [original error message] ", e$message
+      )
+    }
+
+  )
 
   # coordinates of nodes of the track (data_frame)
   trkpt_base <- left_join(
