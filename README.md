@@ -5,6 +5,8 @@
 
 [![R build
 status](https://github.com/py-b/osmbus/workflows/R-CMD-check/badge.svg)](https://github.com/py-b/osmbus/actions)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/osmbus)](https://cran.r-project.org/package=osmbus)
 <!-- badges: end -->
 
 # osmbus
