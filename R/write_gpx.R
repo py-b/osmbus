@@ -1,5 +1,3 @@
-#### ECRITURE GPX ####
-
 #' Export bus line to GPX
 #'
 #' @inheritParams extract_data
@@ -59,8 +57,7 @@ write_gpx <- function(id_rel,
       id = rel_attr["id"],
       version = rel_attr["version"],
       timestamp = rel_attr["timestamp"]
-    ) %>%
-    invisible()
+    )
 
   for (tag in names(rel_tags)) {
     gpx %>%
@@ -84,8 +81,7 @@ write_gpx <- function(id_rel,
       .value = "copyright", "OpenStreetMap contributors",
       attribution = "http://www.openstreetmap.org/copyright",
       license = "http://opendatacommons.org/licenses/odbl/1-0/"
-    ) %>%
-    invisible()
+    )
 
   # wpt
 
@@ -116,8 +112,7 @@ write_gpx <- function(id_rel,
 
   gpx %>%
     xml_add_child("trk") %>%
-    xml_add_child("trkseg") %>%
-    invisible()
+    xml_add_child("trkseg")
 
   for (i in 1:data_list$trkpt_count) {
 
