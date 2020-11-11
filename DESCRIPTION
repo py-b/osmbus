@@ -4,7 +4,6 @@ Title: Export OpenStreetMap Bus Lines to GPX
 Version: 0.1.0
 Imports:
     xml2,
-    tibble,
     dplyr,
     purrr
 Suggests:

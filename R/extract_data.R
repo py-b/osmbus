@@ -5,14 +5,13 @@
 #' @param quiet `TRUE` to desactivate information messages.
 #'
 #' @importFrom dplyr  %>%
-#' @importFrom dplyr  mutate_at
+#' @importFrom dplyr  mutate
 #' @importFrom dplyr  left_join
+#' @importFrom dplyr  tibble as_tibble
 #' @importFrom xml2   read_xml
 #' @importFrom xml2   xml_find_all
 #' @importFrom xml2   xml_attrs
 #' @importFrom xml2   xml_find_first
-#' @importFrom tibble tibble
-#' @importFrom tibble as_tibble
 #' @importFrom purrr  map_chr
 #' @importFrom purrr  map
 #'
@@ -60,9 +59,9 @@ extract_data <- function(id_rel,
     ) %>%
     as_tibble() %>%
     subset(select = c("id", "lat", "lon", "version")) %>%
-    mutate_at(
-      c("lat", "lon"),
-      as.numeric
+    mutate(
+      lat = as.numeric(lat),
+      lon = as.numeric(lon)
     )
 
   # ways constituant le tracé (vecteur)
