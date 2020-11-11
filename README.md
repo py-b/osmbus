@@ -15,6 +15,13 @@ status](https://www.r-pkg.org/badges/version/osmbus)](https://cran.r-project.org
 [OpenStreetMap](https://www.openstreetmap.org) public transport lines to
 GPX files.
 
+It works on OpenStreetMap (OSM) relations containing the following tags
+:
+
+  - `type` = `route`
+  - `route` =
+    `aerialway|bus|ferry|monorail|subway|train|tram|trolleybus`
+
 You can install it from github with :
 
 ``` r
@@ -24,8 +31,8 @@ remotes::install_github("py-b/osmbus")
 
 ### Just give me my GPX file
 
-You only have to provide the relation identifier of the transport line
-in OpenStreetMap (OSM).
+The only thing you have to provide is the OSM relation identifier of the
+transport line.
 
 For example, we want to export [this bus
 line](https://www.openstreetmap.org/relation/3220296) (near Nancy,
