@@ -46,7 +46,33 @@ extract_data <- function(id_rel,
   osm_nodes <- xml_find_all(full, ".//node")
 
   # check there is data
-  if (!length(osm_nodes)) stop("no data found for this relation.")
+  if (!length(osm_nodes)) stop("relation not found or empty.")
+
+  # relation attributes
+  rel_attr <- full %>% xml_find_first(".//relation") %>% xml_attrs()
+
+  # relation tags
+  liste_tags <-
+    full %>%
+    xml_find_all(".//relation/tag") %>%
+    xml_attrs()
+  rel_tags <- stats::setNames(
+    liste_tags %>% map_chr("v"),
+    liste_tags %>% map_chr("k")
+  )
+
+  # check relation tags
+  if (is.na(rel_tags["type"]) || rel_tags["type"] != "route") {
+    stop("the relation must be tagged `type = \"route\"`.")
+  }
+  routes <- c("aerialway", "bus", "ferry", "monorail", "subway",
+              "train", "tram", "trolleybus")
+  if (is.na(rel_tags["route"]) || !rel_tags["route"] %in% routes) {
+    stop(
+      "the \"route\" tag of the relation must be one of \n  ",
+       toString(shQuote(routes))
+    )
+  }
 
   ## Geometry ##
 
@@ -112,19 +138,6 @@ extract_data <- function(id_rel,
     minlon = min(coord_nd$lon),
     maxlat = max(coord_nd$lat),
     maxlon = max(coord_nd$lon)
-  )
-
-  # relation attributes
-  rel_attr <- full %>% xml_find_first(".//relation") %>% xml_attrs()
-
-  # relation tags
-  liste_tags <-
-    full %>%
-    xml_find_all(".//relation/tag") %>%
-    xml_attrs()
-  rel_tags <- stats::setNames(
-    liste_tags %>% map_chr("v"),
-    liste_tags %>% map_chr("k")
   )
 
   # replace ":" by "_" (namespace gpx)
