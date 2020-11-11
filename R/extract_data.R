@@ -5,7 +5,6 @@
 #' @param quiet `TRUE` to desactivate information messages.
 #'
 #' @importFrom dplyr  %>%
-#' @importFrom dplyr  mutate
 #' @importFrom dplyr  left_join
 #' @importFrom dplyr  tibble as_tibble
 #' @importFrom xml2   read_xml
@@ -58,11 +57,10 @@ extract_data <- function(id_rel,
       xml_attrs(osm_nodes)
     ) %>%
     as_tibble() %>%
-    subset(select = c("id", "lat", "lon", "version")) %>%
-    mutate(
-      lat = as.numeric(lat),
-      lon = as.numeric(lon)
-    )
+    subset(select = c("id", "lat", "lon", "version"))
+
+  coord_nd$lat <- as.numeric(coord_nd$lat)
+  coord_nd$lon <- as.numeric(coord_nd$lon)
 
   # ways constituant le tracé (vecteur)
   id_way_trace <-
