@@ -23,9 +23,8 @@ write_gpx <- function(id_rel,
                       overpass_url = "http://overpass-api.de/api/interpreter",
                       quiet = FALSE) {
 
-  ## Extraction données ##
+  ## Extract data ##
 
-  if (!quiet) cat("Relation", id_rel)
   data_list <-
     extract_data(
       id_rel,
@@ -43,8 +42,6 @@ write_gpx <- function(id_rel,
 
   wpt_base <- data_list$stop_base
   trkpt_base <- data_list$trkpt_base
-
-  if (!quiet) cat(",", rel_tags["name"])
 
   ## Construction xml ##
 
@@ -129,7 +126,7 @@ write_gpx <- function(id_rel,
     fileEncoding = "UTF-8"
   )
 
-  if (!quiet) cat(" [Done]\n")
+  if (!quiet) message("  File written to disk : ", shQuote(filename))
 
   invisible(data_list)
 

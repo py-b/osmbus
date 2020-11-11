@@ -35,7 +35,7 @@ extract_data <- function(id_rel,
     "&target=compact"
   )
 
-  if (!quiet) message("Downloading data from OpenStreetMap")
+  if (!quiet) message("Downloading relation <", id_rel, "> from OpenStreetMap")
   dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
   utils::download.file(
     url = download_url,
@@ -131,6 +131,8 @@ extract_data <- function(id_rel,
   )
   # remplace : par _ (namespace gpx), solution provisoire
   names(rel_tags) <- gsub(":", "_", names(rel_tags))
+
+  if (!quiet) message("  Route name : ", shQuote(rel_tags["name"]))
 
   # distance au point précédent
   trkpt_base$d_last <- numeric(trkpt_count)
