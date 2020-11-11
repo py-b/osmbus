@@ -1,6 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<!-- badges: start -->
+
+[![R build
+status](https://github.com/py-b/osmbus/workflows/R-CMD-check/badge.svg)](https://github.com/py-b/osmbus/actions)
+<!-- badges: end -->
+
 # osmbus
 
 **osmbus** is an R package which exports
