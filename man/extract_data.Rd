@@ -2,7 +2,7 @@
 % Please edit documentation in R/extract_data.R
 \name{extract_data}
 \alias{extract_data}
-\title{Download data and procces it to be exported}
+\title{Get the data about an OSM transport line into R}
 \usage{
 extract_data(
   id_rel,
@@ -13,10 +13,48 @@ extract_data(
 \arguments{
 \item{id_rel}{the identifier of the OpenStreetMap relation.}
 
-\item{overpass_url}{instance of the Overpass API to use to retrieve data.}
+\item{overpass_url}{instance of the Overpass API to use to retrieve data (see
+\href{https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances}{this page}
+for a list of available instances).}
 
 \item{quiet}{\code{TRUE} to desactivate information messages.}
 }
+\value{
+A list containing the following elements :
+\itemize{
+\item \code{bounds} : the bounding box of the data ;
+\item \code{rel_tags} : the tags of the relation in the OpenStreetMap database ;
+\item \code{rel_attr} : metadata of the relation, such as id, version, date of
+last modification... ;
+\item \code{stop_count} : number of stops ;
+\item \code{trkpt_count}: numbre of points of the track ;
+\item \code{trk_km} : length of the track, in kilometers ;
+\item \code{stop_base} : data.frame with informations about stops ;
+\item \code{trkpt_base} : data.frame with informations about trackpoints (in
+particular the distance between too consecutive points, in meters).
+}
+}
 \description{
-Download data and procces it to be exported
+Fetch data on OpenStreetMap server, processes it and stores it into a list.
+}
+\section{Details}{
+
+The data coming from the OSM server must be clean for the processing to
+succeed.
+
+As stated in the OSM documentation, the ways in the relation should be listed
+beginning with the way at the initial stop position and ending with the way
+at the terminal stop, in the right order. The package will automatically
+reverse some ways to produce a continuous track.
+
+If roundabouts (or any circular ways) are part of the track, osmbus will find
+its way through them, i.e. it will select the only nodes used by the transport
+vehicle from entrance to exit.
+}
+
+\examples{
+\dontrun{
+
+extract_data(id_rel = "123767")
+}
 }

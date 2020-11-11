@@ -1,20 +1,55 @@
-#' Download data and procces it to be exported
+#' Get the data about an OSM transport line into R
+#'
+#' Fetch data on OpenStreetMap server, processes it and stores it into a list.
 #'
 #' @param id_rel the identifier of the OpenStreetMap relation.
-#' @param overpass_url instance of the Overpass API to use to retrieve data.
+#' @param overpass_url instance of the Overpass API to use to retrieve data (see
+#'   [this page](https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances)
+#'   for a list of available instances).
 #' @param quiet `TRUE` to desactivate information messages.
 #'
-#' @importFrom dplyr  %>%
-#' @importFrom dplyr  left_join
-#' @importFrom dplyr  tibble as_tibble
-#' @importFrom xml2   read_xml
-#' @importFrom xml2   xml_find_all
-#' @importFrom xml2   xml_attrs
-#' @importFrom xml2   xml_find_first
-#' @importFrom purrr  map_chr
-#' @importFrom purrr  map
+#' @return A list containing the following elements :
+#'   - `bounds` : the bounding box of the data ;
+#'   - `rel_tags` : the tags of the relation in the OpenStreetMap database ;
+#'   - `rel_attr` : metadata of the relation, such as id, version, date of
+#'     last modification... ;
+#'   - `stop_count` : number of stops ;
+#'   - `trkpt_count`: numbre of points of the track ;
+#'   - `trk_km` : length of the track, in kilometers ;
+#'   - `stop_base` : data.frame with informations about stops ;
+#'   - `trkpt_base` : data.frame with informations about trackpoints (in
+#'      particular the distance between too consecutive points, in meters).
+#'
+#' @section Details:
+#' The data coming from the OSM server must be clean for the processing to
+#' succeed.
+#'
+#' As stated in the OSM documentation, the ways in the relation should be listed
+#' beginning with the way at the initial stop position and ending with the way
+#' at the terminal stop, in the right order. The package will automatically
+#' reverse some ways to produce a continuous track.
+#'
+#' If roundabouts (or any circular ways) are part of the track, osmbus will find
+#' its way through them, i.e. it will select the only nodes used by the transport
+#' vehicle from entrance to exit.
+#'
+#' @importFrom dplyr %>%
+#' @importFrom dplyr left_join
+#' @importFrom dplyr tibble as_tibble
+#' @importFrom xml2  read_xml
+#' @importFrom xml2  xml_find_all
+#' @importFrom xml2  xml_attrs
+#' @importFrom xml2  xml_find_first
+#' @importFrom purrr map_chr
+#' @importFrom purrr map
 #'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#'
+#' extract_data(id_rel = "123767")
+#' }
 
 extract_data <- function(id_rel,
                          overpass_url = "http://overpass-api.de/api/interpreter",

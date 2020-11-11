@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_gpx.R
 \name{write_gpx}
 \alias{write_gpx}
-\title{Export bus line to GPX}
+\title{Export an OSM transport line to GPX}
 \usage{
 write_gpx(
   id_rel,
@@ -24,7 +24,9 @@ tags \code{route}, \code{ref} and \code{id} of the OSM relation.}
 \item{osm_info}{include informations about OpenStreetMap nodes (id and
 version).}
 
-\item{overpass_url}{instance of the Overpass API to use to retrieve data.}
+\item{overpass_url}{instance of the Overpass API to use to retrieve data (see
+\href{https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances}{this page}
+for a list of available instances).}
 
 \item{quiet}{\code{TRUE} to desactivate information messages.}
 }
@@ -33,5 +35,39 @@ The data used to export the file, invisibly. This is the same as the
 result of \code{\link{extract_data}}.
 }
 \description{
-Export bus line to GPX
+Fetch the data on OpenStreetMap server, processes it and export it to a GPX
+file.
+}
+\section{Content of the file}{
+
+\itemize{
+\item transport line metadata : some retrieved from OSM (for example the version
+of the relation) and some calculated by the package (for example the length
+in kilometers) ;
+\item coordinates and names of the stops (role = "stop" in the relation), as
+\code{wpt(s)} elements ;
+\item list of the track points in the correct order, as a \code{trkseg} element.
+}
+}
+
+\section{Details}{
+
+The data coming from the OSM server must be clean for the processing to
+succeed.
+
+As stated in the OSM documentation, the ways in the relation should be listed
+beginning with the way at the initial stop position and ending with the way
+at the terminal stop, in the right order. The package will automatically
+reverse some ways to produce a continuous track.
+
+If roundabouts (or any circular ways) are part of the track, osmbus will find
+its way through them, i.e. it will select the only nodes used by the transport
+vehicle from entrance to exit.
+}
+
+\examples{
+\dontrun{
+
+write_gpx(id_rel = "123767")
+}
 }

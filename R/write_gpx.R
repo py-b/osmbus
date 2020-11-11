@@ -1,4 +1,7 @@
-#' Export bus line to GPX
+#' Export an OSM transport line to GPX
+#'
+#' Fetch the data on OpenStreetMap server, processes it and export it to a GPX
+#' file.
 #'
 #' @inheritParams extract_data
 #' @param path the directory where to write the GPX file.
@@ -10,15 +13,31 @@
 #' @return The data used to export the file, invisibly. This is the same as the
 #'   result of [`extract_data`].
 #'
+#' @inheritSection extract_data Details
+#'
+#' @section Content of the file:
+#'
+#' - transport line metadata : some retrieved from OSM (for example the version
+#'   of the relation) and some calculated by the package (for example the length
+#'   in kilometers) ;
+#' - coordinates and names of the stops (role = "stop" in the relation), as
+#'   `wpt(s)` elements ;
+#' - list of the track points in the correct order, as a `trkseg` element.
+#'
 #' @importFrom dplyr %>%
 #' @importFrom xml2 xml_new_document
 #' @importFrom xml2 xml_add_child
 #' @importFrom xml2 xml_find_first
 #' @importFrom xml2 xml_add_sibling
-#' @importFrom xml2 xml_find_all
 #' @importFrom xml2 write_xml
 #'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#'
+#' write_gpx(id_rel = "123767")
+#' }
 
 write_gpx <- function(id_rel,
                       path = ".",
