@@ -1,7 +1,9 @@
 #' Export bus line to GPX
 #'
 #' @inheritParams extract_data
-#' @param path the directorty where to write the GPX file.
+#' @param path the directory where to write the GPX file.
+#' @param filename name of the file. If `NULL` (default), a name based on the
+#'   tags `route`, `ref` and `id` of the OSM relation.
 #' @param osm_info include informations about OpenStreetMap nodes (id and
 #'   version).
 #'
@@ -20,6 +22,7 @@
 
 write_gpx <- function(id_rel,
                       path = ".",
+                      filename = NULL,
                       osm_info = TRUE,
                       overpass_url = "http://overpass-api.de/api/interpreter",
                       quiet = FALSE) {
@@ -136,7 +139,9 @@ write_gpx <- function(id_rel,
   ## Write disk ##
 
   dir.exists(path) || dir.create(path)
-  filename <- paste0(rel_tags["route"], "-", rel_tags["ref"], "_", rel_attr["id"], ".gpx")
+  if (is.null(filename)) {
+    filename <- paste0(rel_tags["route"], "-", rel_tags["ref"], "_", rel_attr["id"], ".gpx")
+  }
   write_xml(
     gpx,
     file.path(path, filename),
