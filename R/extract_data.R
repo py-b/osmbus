@@ -20,7 +20,7 @@ extract_data <- function(id_rel,
                          overpass_url = "http://overpass-api.de/api/interpreter",
                          quiet = FALSE) {
 
-  ## Télécharge données ##
+  ## Download data ##
 
   overpass_query <- sprintf(
     "[out:xml]; (relation(id:%s);); (._;>;); out meta;",
@@ -45,12 +45,12 @@ extract_data <- function(id_rel,
   full <- read_xml(dest)
   osm_nodes <- xml_find_all(full, ".//node")
 
-  # verif présence data :
+  # check there is data
   if (!length(osm_nodes)) stop("no data found for this relation.")
 
-  ## Géométrie ##
+  ## Geometry ##
 
-  # coordonnées et version de tous les noeuds du fichier full (data_frame)
+  # coordinates and version of all downloaded nodes (tibble)
   coord_nd <-
     do.call(
       rbind,
@@ -62,36 +62,36 @@ extract_data <- function(id_rel,
   coord_nd$lat <- as.numeric(coord_nd$lat)
   coord_nd$lon <- as.numeric(coord_nd$lon)
 
-  # ways constituant le tracé (vecteur)
+  # ways in the track (character vector)
   id_way_trace <-
     full %>%
     xml_find_all(".//relation/member[@role='']") %>%
     xml_attrs() %>%
     map_chr("ref")
 
-  # noeuds constituant le tracé ordonnés + sans doublon (vecteur)
+  # ordered and unduplicated track nodes (vector)
   trace <-
     map(id_way_trace, list_nd, full) %>%
     merge_ways()
 
-  # coord des noeuds constituant le tracé (data_frame)
+  # coordinates of nodes of the track (data_frame)
   trkpt_base <- left_join(
     tibble(id = trace),
     coord_nd,
     by = "id"
   )
 
-  # stop de la relation (vecteur)
+  # relation stops (vector)
   stop_id <-
     full %>%
     xml_find_all(".//relation/member[@role='stop']") %>%
     xml_attrs() %>%
     map_chr("ref")
 
-  # nom des stop (vecteur)
+  # stop names (vector)
   stop_names <- map_chr(stop_id, nd_name, full)
 
-  # coord des stop (data_frame)
+  # stop coordinates (data_frame)
   stop_base <- left_join(
     tibble(
       id = stop_id,
@@ -101,13 +101,12 @@ extract_data <- function(id_rel,
     by = "id"
   )
 
-  ## Meta données ##
+  ## Metadata ##
 
-  # nombre de stop, nombre de points du tracé
   stop_count <- nrow(stop_base)
   trkpt_count <- nrow(trkpt_base)
 
-  #bbox
+  # bounding box
   bounds <- c(
     minlat = min(coord_nd$lat),
     minlon = min(coord_nd$lon),
@@ -115,10 +114,10 @@ extract_data <- function(id_rel,
     maxlon = max(coord_nd$lon)
   )
 
-  # attributs de la relation
+  # relation attributes
   rel_attr <- full %>% xml_find_first(".//relation") %>% xml_attrs()
 
-  # tags de la relation
+  # relation tags
   liste_tags <-
     full %>%
     xml_find_all(".//relation/tag") %>%
@@ -127,12 +126,14 @@ extract_data <- function(id_rel,
     liste_tags %>% map_chr("v"),
     liste_tags %>% map_chr("k")
   )
-  # remplace : par _ (namespace gpx), solution provisoire
+
+  # replace ":" by "_" (namespace gpx)
+  # workaround, a best way would be a use the standalone xml attribute
   names(rel_tags) <- gsub(":", "_", names(rel_tags))
 
   if (!quiet) message("  Route name : ", shQuote(rel_tags["name"]))
 
-  # distance au point précédent
+  # distance to previous point
   trkpt_base$d_last <- numeric(trkpt_count)
   for (i in 2:trkpt_count) {
     trkpt_base$d_last[i] <-
@@ -147,14 +148,14 @@ extract_data <- function(id_rel,
   ## Ouptut ##
 
   list(
-   # méta données
+   # metadata
     bounds = bounds,
     rel_tags = rel_tags,
     rel_attr = rel_attr,
     stop_count = stop_count,
     trkpt_count = trkpt_count,
     trk_km = trk_km,
-   # géométrie
+   # geometry
     stop_base = stop_base,
     trkpt_base = trkpt_base
   )
@@ -162,14 +163,14 @@ extract_data <- function(id_rel,
 }
 
 
-#### Fonctions auxiliaires ####
+#### Auxiliary functions ####
 
 #' @importFrom dplyr %>%
 #' @importFrom xml2 xml_find_all
 #' @importFrom xml2 xml_attrs
 #' @importFrom xml2 xml_find_first
 
-# liste des noeuds constituant un way (x=fichier xml full)
+# node list of a way (x = downloaded xml data)
 list_nd <- function(way, x) {
   x %>%
     xml_find_first(sprintf(".//way[@id='%s']", way)) %>%
@@ -182,7 +183,7 @@ list_nd <- function(way, x) {
 #' @importFrom xml2 xml_attr
 #' @importFrom xml2 xml_find_first
 
-# name d'un noeud nd (x=fichier xml full)
+# name of a node nd (x = downloaded xml data)
 nd_name <- function(nd, x) {
   x %>%
     xml_find_first(sprintf(".//node[@id='%s']", nd)) %>%

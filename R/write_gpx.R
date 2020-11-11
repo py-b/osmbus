@@ -43,7 +43,7 @@ write_gpx <- function(id_rel,
   wpt_base <- data_list$stop_base
   trkpt_base <- data_list$trkpt_base
 
-  ## Construction xml ##
+  ## Generate xml ##
 
   gpx <- xml_new_document(version = "1.0") %>% xml_add_child("gpx")
 
@@ -116,7 +116,7 @@ write_gpx <- function(id_rel,
     )
   }
 
-  ## Écriture disque ##
+  ## Write disk ##
 
   dir.exists(path) || dir.create(path)
   filename <- paste0(rel_tags["route"], "-", rel_tags["ref"], "_", rel_attr["id"], ".gpx")
