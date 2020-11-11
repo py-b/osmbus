@@ -7,6 +7,8 @@ Imports:
     tibble,
     dplyr,
     purrr
+Suggests:
+    testthat
 Authors@R:
     person(
       "Pierre-Yves", "Berrard",
