@@ -12,17 +12,16 @@ status](https://www.r-pkg.org/badges/version/osmbus)](https://cran.r-project.org
 # osmbus
 
 **osmbus** is an R package which exports
-[OpenStreetMap](https://www.openstreetmap.org) public transport lines to
-GPX files.
+[OpenStreetMap](https://www.openstreetmap.org) (OSM) public transport
+lines to GPX files.
 
-It works on OpenStreetMap (OSM) relations containing the following tags
-:
+It works with OSM *relations* containing the following tags :
 
   - `type` = `route`
   - `route` =
     `aerialway|bus|ferry|monorail|subway|train|tram|trolleybus`
 
-You can install it from github with :
+You can install the package from GitHub with :
 
 ``` r
 # install.packages("remotes")
@@ -31,34 +30,34 @@ remotes::install_github("py-b/osmbus")
 
 ### Just give me my GPX file
 
-The only thing you have to provide is the OSM relation identifier of the
-transport line.
-
-For example, we want to export [this bus
-line](https://www.openstreetmap.org/relation/3220296) (near Nancy,
-France) :
+The only mandatory argument is the OSM identifier of the transport line.
+For instance, to export [this bus
+line](https://www.openstreetmap.org/relation/3220296) (in Nancy, France)
+:
 
 ``` r
 write_gpx(id_rel = "3220296")
 ```
 
+The data coming from the OSM server must be clean for the export to
+work.
+
 As stated in the OSM documentation, the ways in the relation should be
 listed beginning with the way at the initial stop position and ending
-with the way at the terminal stop, in the right order. **If this is not
-the case, the function cannot work**. The package automatically reverses
-certain ways to produce a continuous track.
+with the way at the terminal stop, in the right order. The package will
+automatically reverse some ways to produce a continuous track.
 
-If roundabouts (or any circular ways) are present, the package will find
-its way through them, i.e. it will select the only nodes used by the
-transport vehicle from entrance to exit.
+If roundabouts (or any circular ways) are part of the track, **osmbus**
+will find its way through them, i.e. it will select the only nodes used
+by the transport vehicle from entrance to exit.
 
-##### Content of the file
+##### Content of the output file
 
   - transport line metadata : some retrieved from OSM (for example the
     version of the relation) and some calculated by the package (for
     example the length in kilometers) ;
-  - coordinates and names of the stops (`role = "stop"` in the
-    relation), as `wpt(s)` elements ;
+  - coordinates and names of the stops (`role=stop` in the relation), as
+    `wpt(s)` elements ;
   - list of the track points in the correct order, as a `trkseg`
     element.
 
@@ -107,6 +106,9 @@ It will be structured like this :
   </trk>
 </gpx>
 ```
+
+Attributes of OSM objects (`osm_node` and `version`) can be ommited in
+the file by setting `osm_info = FALSE`.
 
 ##### Example of use
 
@@ -163,7 +165,7 @@ extract_data(id_rel = "3220296")
 #> [1] 946
 #> 
 #> $trk_km
-#> [1] 17.402
+#> [1] 17.383
 #> 
 #> $stop_base
 #> # A tibble: 46 x 5
