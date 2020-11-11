@@ -77,17 +77,17 @@ It will be structured like this :
     <bounds minlat="48.6634437" minlon="6.1424778" maxlat="48.7196149" maxlon="6.2695481"/>
     <wpt_count>46</wpt_count>
     <trkpt_count>946</trkpt_count>
-    <trk_km>17.402</trk_km>
+    <trk_km>17.383</trk_km>
     <copyright attribution="http://www.openstreetmap.org/copyright"/>
   </metadata>
-  <wpt lat="48.7195418" lon="6.2657901">
+  <wpt lat="48.7195418" lon="6.2657901" osm_node="3163674258" version="1">
     <name>Seichamps Haie Cerlin</name>
   </wpt>
-  <wpt lat="48.7169089" lon="6.2656034">
+  <wpt lat="48.7169089" lon="6.2656034" osm_node="3163519911" version="1">
     <name>Seichamps Église</name>
   </wpt>
   <!-- .... other way points ... -->
-  <wpt lat="48.6635161" lon="6.1561497">
+  <wpt lat="48.6635161" lon="6.1561497" osm_node="1650185781" version="6">
     <name>Villers Campus Sciences</name>
   </wpt>
   <trk>

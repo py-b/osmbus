@@ -7,6 +7,7 @@
 write_gpx(
   id_rel,
   path = ".",
+  osm_info = TRUE,
   overpass_url = "http://overpass-api.de/api/interpreter",
   quiet = FALSE
 )
@@ -15,6 +16,9 @@ write_gpx(
 \item{id_rel}{the identifier of the OpenStreetMap relation.}
 
 \item{path}{the directorty where to write the GPX file.}
+
+\item{osm_info}{include informations about OpenStreetMap nodes (id and
+version).}
 
 \item{overpass_url}{instance of the Overpass API to use to retrieve data.}
 

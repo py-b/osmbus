@@ -4,6 +4,8 @@
 #'
 #' @inheritParams extract_data
 #' @param path the directorty where to write the GPX file.
+#' @param osm_info include informations about OpenStreetMap nodes (id and
+#'   version).
 #'
 #' @return The data used to export the file, invisibly. This is the same as the
 #'   result of [`extract_data`].
@@ -20,6 +22,7 @@
 
 write_gpx <- function(id_rel,
                       path = ".",
+                      osm_info = TRUE,
                       overpass_url = "http://overpass-api.de/api/interpreter",
                       quiet = FALSE) {
 
@@ -87,15 +90,27 @@ write_gpx <- function(id_rel,
   # wpt
 
   for (i in 1:data_list$stop_count) {
-    gpx %>%
-      xml_add_child(
-        .value = "wpt",
-        lat = paste(wpt_base$lat[i]),
-        lon = paste(wpt_base$lon[i])
-      ) %>%
-      xml_add_child(.value = "name", wpt_base$name[i])
-  }
 
+    params_add_wpt <-
+      list(
+        .x     = gpx,
+        .value = "wpt",
+        lat    = as.character(wpt_base$lat[i]),
+        lon    = as.character(wpt_base$lon[i])
+      )
+
+    if (osm_info) {
+      params_add_wpt$osm_node <- wpt_base$id[i]
+      params_add_wpt$version  <- wpt_base$version[i]
+    }
+
+    do.call(xml_add_child, params_add_wpt) %>%
+    xml_add_child(
+      .value = "name",
+      wpt_base$name[i]
+    )
+
+  }
 
   # trk
 
@@ -105,15 +120,22 @@ write_gpx <- function(id_rel,
     invisible()
 
   for (i in 1:data_list$trkpt_count) {
-    gpx %>%
-    xml_find_all(".//trkseg") %>%
-    xml_add_child(
-      "trkpt",
-      lat = paste(trkpt_base$lat[i]),
-      lon = paste(trkpt_base$lon[i]),
-      osm_node = trkpt_base$id[i],
-      version = trkpt_base$version[i]
-    )
+
+    params_add_trkpt <-
+      list(
+        .x     = xml_find_first(gpx, ".//trkseg"),
+        .value = "trkpt",
+        lat    = as.character(trkpt_base$lat[i]),
+        lon    = as.character(trkpt_base$lon[i])
+      )
+
+    if (osm_info) {
+      params_add_trkpt$osm_node <- trkpt_base$id[i]
+      params_add_trkpt$version  <- trkpt_base$version[i]
+    }
+
+    do.call(xml_add_child, params_add_trkpt)
+
   }
 
   ## Write disk ##
