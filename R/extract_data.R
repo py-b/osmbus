@@ -101,7 +101,7 @@ extract_data <- function(id_rel,
 
   # check relation tags
   if (is.na(rel_tags["type"]) || rel_tags["type"] != "route") {
-    stop("the relation must be tagged `type = \"route\"`.")
+    stop("the relation must be tagged `type=route`.")
   }
   routes <- c("aerialway", "bus", "ferry", "monorail", "subway",
               "train", "tram", "trolleybus")
