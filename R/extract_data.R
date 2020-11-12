@@ -112,6 +112,12 @@ extract_data <- function(id_rel,
     )
   }
 
+  if (!quiet) {
+    line_name <- rel_tags["name"]
+    msg_name <- if (is.na(line_name)) "none" else shQuote(line_name)
+    message("  Line name : ", msg_name)
+  }
+
   ## Geometry ##
 
   # coordinates and version of all downloaded nodes (tibble)
@@ -194,8 +200,6 @@ extract_data <- function(id_rel,
   # replace ":" by "_" (namespace gpx)
   # workaround, a best way would be a use the standalone xml attribute
   names(rel_tags) <- gsub(":", "_", names(rel_tags))
-
-  if (!quiet) message("  Route name : ", shQuote(rel_tags["name"]))
 
   # distance to previous point
   trkpt_base$d_last <- numeric(trkpt_count)
