@@ -55,6 +55,9 @@ extract_data <- function(id_rel,
                          overpass_url = "http://overpass-api.de/api/interpreter",
                          quiet = FALSE) {
 
+  if (length(id_rel) != 1) stop("provide only one `id_rel`")
+  if (!grepl("^\\d+$", id_rel)) stop("`id_rel` must contain only digits")
+
   ## Download data ##
 
   overpass_query <- sprintf(
