@@ -73,14 +73,14 @@ extract_data <- function(id_rel,
   )
 
   if (!quiet) message("Downloading relation <", id_rel, "> from OpenStreetMap")
-  dest <- file.path(tempdir(), paste0(id_rel, ".xml"))
+  tmp_xml <- file.path(tempdir(), paste0("osmbus-", id_rel, ".xml"))
   utils::download.file(
     url = download_url,
-    destfile = dest,
+    destfile = tmp_xml,
     quiet = TRUE
   )
 
-  full <- read_xml(dest)
+  full <- read_xml(tmp_xml)
   osm_nodes <- xml_find_all(full, ".//node")
 
   # check there is data
