@@ -24,13 +24,6 @@
 #'   `wpt(s)` elements ;
 #' - list of the track points in the correct order, as a `trkseg` element.
 #'
-#' @importFrom dplyr %>%
-#' @importFrom xml2 xml_new_document
-#' @importFrom xml2 xml_add_child
-#' @importFrom xml2 xml_find_first
-#' @importFrom xml2 xml_add_sibling
-#' @importFrom xml2 write_xml
-#'
 #' @export
 #'
 #' @examples
@@ -46,14 +39,47 @@ write_gpx <- function(id_rel,
                       overpass_url = "http://overpass-api.de/api/interpreter",
                       quiet = FALSE) {
 
-  ## Extract data ##
-
   data_list <-
     extract_data(
       id_rel,
       overpass_url = overpass_url,
       quiet = quiet
     )
+
+  write_gpx_from_list(
+    data_list,
+    path = path,
+    filename = filename,
+    osm_info = osm_info,
+    quiet = quiet
+  )
+
+}
+
+#' Export the list of information about a transport line to GPX
+
+#' @param data_list list of informations, typically given by [`extract_data`].
+#' @inheritParams extract_data
+#' @inheritParams write_gpx
+#'
+#' @return The data used to export the file, invisibly. This is the same as the
+#'   result of [`extract_data`].
+#'
+#' @inheritSection write_gpx Content of the file
+#'
+#' @importFrom dplyr %>%
+#' @importFrom xml2 xml_new_document
+#' @importFrom xml2 xml_add_child
+#' @importFrom xml2 xml_find_first
+#' @importFrom xml2 xml_add_sibling
+#' @importFrom xml2 write_xml
+
+write_gpx_from_list <- function(data_list,
+                                path = ".",
+                                filename = NULL,
+                                osm_info = TRUE,
+                                quiet = FALSE) {
+
 
   minlat <- as.character(data_list$bounds["minlat"])
   minlon <- as.character(data_list$bounds["minlon"])

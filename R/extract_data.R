@@ -33,16 +33,6 @@
 #' its way through them, i.e. it will select the only nodes used by the transport
 #' vehicle from entrance to exit.
 #'
-#' @importFrom dplyr %>%
-#' @importFrom dplyr left_join
-#' @importFrom dplyr tibble as_tibble
-#' @importFrom xml2  read_xml
-#' @importFrom xml2  xml_find_all
-#' @importFrom xml2  xml_attrs
-#' @importFrom xml2  xml_find_first
-#' @importFrom purrr map_chr
-#' @importFrom purrr map
-#'
 #' @export
 #'
 #' @examples
@@ -80,7 +70,45 @@ extract_data <- function(id_rel,
     quiet = TRUE
   )
 
-  full <- read_xml(tmp_xml)
+  ## Process data ##
+
+  extract_file_data(tmp_xml, quiet = quiet)
+
+}
+
+
+#### Auxiliary functions ####
+
+#' Extract xml data from a file on disk
+#'
+#' @param xml_file xml containing data (fetched from OSM).
+#' @inheritParams extract_data
+#'
+#' @return A list containing the following elements :
+#'   - `bounds` : the bounding box of the data ;
+#'   - `rel_tags` : the tags of the relation in the OpenStreetMap database ;
+#'   - `rel_attr` : metadata of the relation, such as id, version, date of
+#'     last modification... ;
+#'   - `stop_count` : number of stops ;
+#'   - `trkpt_count`: numbre of points of the track ;
+#'   - `trk_km` : length of the track, in kilometers ;
+#'   - `stop_base` : data.frame with informations about stops ;
+#'   - `trkpt_base` : data.frame with informations about trackpoints (in
+#'      particular the distance between too consecutive points, in meters)
+#'
+#' @importFrom dplyr %>%
+#' @importFrom dplyr left_join
+#' @importFrom dplyr tibble as_tibble
+#' @importFrom xml2  read_xml
+#' @importFrom xml2  xml_find_all
+#' @importFrom xml2  xml_attrs
+#' @importFrom xml2  xml_find_first
+#' @importFrom purrr map_chr
+#' @importFrom purrr map
+
+extract_file_data <- function(xml_file, quiet = FALSE) {
+
+  full <- read_xml(xml_file)
   osm_nodes <- xml_find_all(full, ".//node")
 
   # check there is data
@@ -229,9 +257,6 @@ extract_data <- function(id_rel,
   )
 
 }
-
-
-#### Auxiliary functions ####
 
 #' @importFrom dplyr %>%
 #' @importFrom xml2 xml_find_all
