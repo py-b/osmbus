@@ -21,10 +21,14 @@ test_that("exists but not transport line", {
     "not found or empty"
   )
 
+  Sys.sleep(2)
+
   expect_error(
     extract_data("300751"), # type = multipolygon
     "the relation must be tagged `type=route`."
   )
+
+  Sys.sleep(2)
 
   expect_error(
     extract_data("5370153"), # route = hiking
