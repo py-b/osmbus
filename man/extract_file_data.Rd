@@ -29,3 +29,4 @@ particular the distance between too consecutive points, in meters)
 \description{
 Extract xml data from a file on disk
 }
+\keyword{internal}

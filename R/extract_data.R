@@ -105,6 +105,8 @@ extract_data <- function(id_rel,
 #' @importFrom xml2  xml_find_first
 #' @importFrom purrr map_chr
 #' @importFrom purrr map
+#'
+#' @keywords internal
 
 extract_file_data <- function(xml_file, quiet = FALSE) {
 

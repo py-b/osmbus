@@ -73,6 +73,8 @@ write_gpx <- function(id_rel,
 #' @importFrom xml2 xml_find_first
 #' @importFrom xml2 xml_add_sibling
 #' @importFrom xml2 write_xml
+#'
+#' @keywords internal
 
 write_gpx_from_list <- function(data_list,
                                 path = ".",
