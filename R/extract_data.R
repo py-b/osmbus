@@ -134,7 +134,7 @@ extract_file_data <- function(xml_file, quiet = FALSE) {
     stop("the relation must be tagged `type=route`.")
   }
   routes <- c("aerialway", "bus", "ferry", "monorail", "subway",
-              "train", "tram", "trolleybus")
+              "train", "tram", "trolleybus", "funicular")
   if (is.na(rel_tags["route"]) || !rel_tags["route"] %in% routes) {
     stop(
       "the \"route\" tag of the relation must be one of \n  ",
